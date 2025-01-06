@@ -1,4 +1,13 @@
 # Samsung-RISCV
+The program focuses on the RISC-V architecture and utilizes open-source tools to educate individuals about VLSI chip design and RISC-V. The program is led by Kunal Ghosh Sir.
+
+##  Essential Information
+
+**Name:**  Amaan Bani
+**College:** Dayananda Sagar College Of Engineering 
+**Email ID:** amaanbani@gmail.com  
+**GitHub Profile:** [Amaanbani](https://github.com/Amaanbani?tab=repositories)  
+**LinkedIN Profile:** [amaan-bani](https://www.linkedin.com/in/amaan-bani-324565331/)
 
 <details>
 <summary><b>Task 1 :</b> This Task involves reviewing C-based and RISC-V-based lab videos and performing the compilation of C code using both GCC and the RISC-V compiler</summary>
@@ -19,7 +28,7 @@ We need to follow the specified steps to compile any **.c** file on our machine:
 	```
 ![C Code compiled on gcc Compiler](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%201/C%20Code%20compiled%20on%20gcc%20compiler.png)
 
-### RISCV based LAB
+### RISC-V based LAB
 We need to compile the code again, but this time using the RISC-V GCC compiler. Follow the steps provided:  
 1. Open the terminal and run the given command:  
 
@@ -28,7 +37,7 @@ We need to compile the code again, but this time using the RISC-V GCC compiler. 
 	```
 ![cat Command](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%201/cat%20Command.png)
 
-2. Using the **cat** command, the entire C code will be displayed on the terminal. Now run the following command to compile the code in riscv64 gcc compiler:  
+2. Use the **cat** command to display the entire C code in the terminal. Next, run the following command to compile the code using the RISC-V GCC compiler:  
 
 	```
 	riscv64-unknown-elf-gcc -O1 -mabi=lp64 -march=rv64i -o sum_1ton.o sum_1ton.c
@@ -40,12 +49,12 @@ We need to compile the code again, but this time using the RISC-V GCC compiler. 
 	```
 ![Objdump using -O1 format](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%201/objDump%20using%20-O1%20format.png)
 
-4. The Assembly Language code of our C code will be displayed on the terminal. Type ```/main``` to locate the main section of our code.  
+4.The Assembly Language code generated from the C code will be displayed in the terminal. Type ```/main``` to locate the main section of our code.  
 
-### *Descriptions of the keyword used in above command*  
-* **-mabi=lp64:** This option specifies the ABI (Application Binary Interface) to use ```lp64```, which is for 64-bit integer, long and pointer size. This ABI is used for 64-bit RISCV architecture.  
-* **-march=rv64i:** This option specifies the architecture that we use, which is rv64i, indicates the 64-bit RISCV base integer instruction set. This also confirms the targeting of 64-bit architecture.  
-* **riscv-objdump:** A tool for disassembling RISC-V binaries, providing insights into the code structure and helping in debugging.  
+### *Descriptions of the keyword used in command above *  
+* **-mabi=lp64:** Specifies the ABI (Application Binary Interface) as ```lp64```, which supports 64-bit integers, long, and pointer sizes. This ABI is intended for 64-bit RISC-V architecture.  
+* **-march=rv64i:** Defines the target architecture as ```rv64i```, which represents the 64-bit RISC-V base integer instruction set, ensuring compatibility with the 64-bit architecture.  
+* **riscv-objdump:** A disassembler tool for RISC-V binaries that provides insights into the code structure, assisting in debugging.  
 * **-Ofast:** The option -Ofast in the command ```riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c``` is a compiler optimization flag used with the GNU Compiler Collection (GCC). This flag is used to instruct the compiler to optimize the generated code for maximum speed. The use of ```-Ofast``` is typically chosen for applications where execution speed is critical and where deviations from standard behavior are acceptable. However, it's important to test thoroughly, as this level of optimization can introduce subtle bugs, especially in complex calculations or when strict compliance with external standards is required.  
 * **-O1:** A basic optimization level that balances improved execution speed and reduced code size with minimal impact on compilation time. It is suitable for applications requiring moderate optimization without extensive resource usage.  
 
