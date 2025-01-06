@@ -3,11 +3,12 @@ The program focuses on the RISC-V architecture and utilizes open-source tools to
 
 ##  Essential Information
 
-**Name:**  Amaan Bani
-**College:** Dayananda Sagar College Of Engineering 
-**Email ID:** amaanbani@gmail.com  
-**GitHub Profile:** [Amaanbani](https://github.com/Amaanbani?tab=repositories)  
-**LinkedIN Profile:** [amaan-bani](https://www.linkedin.com/in/amaan-bani-324565331/)
+ **Name:**  Amaan Bani    
+ **College:** Dayananda Sagar College Of Engineering   
+ **Email ID:**  amaanbani@gmail.com  
+ **GitHub Profile:** [Amaanbani](https://github.com/Amaanbani?tab=repositories)   
+ **LinkedIN Profile:** [amaan-bani](https://www.linkedin.com/in/amaan-bani-324565331/)
+
 
 <details>
 <summary><b>Task 1 :</b> This Task involves reviewing C-based and RISC-V-based lab videos and performing the compilation of C code using both GCC and the RISC-V compiler</summary>
@@ -37,25 +38,36 @@ We need to compile the code again, but this time using the RISC-V GCC compiler. 
 	```
 ![cat Command](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%201/cat%20Command.png)
 
-2. Use the **cat** command to display the entire C code in the terminal. Next, run the following command to compile the code using the RISC-V GCC compiler:  
+2. Use the **cat** command to display the entire C code in the terminal. Next, run the following command to compile the code using the RISC-V -O1 GCC compiler:  
 
 	```
 	riscv64-unknown-elf-gcc -O1 -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c
 	```
-3. The following command is used to display the file details of ```sum1ton.c``` in reverse chronological order, showing the most recently modified files last, along with information such as file permissions, ownership, size, and the timestamp of the last modification:
+3. The following command is used to display the file details of ```sum1ton.c``` in reverse chronological order, showing the most recently modified files last, 	 along with information such as file permissions, ownership, size, and the timestamp of the last modification:
 
 	```
 	ls -ltr sum1ton.c
  	```
 
-4. To execute the C code on your terminal, use the following command.:    
+4. To execute the C code on your terminal, use the following command:    
 
 	```
 	riscv64-unknown-elf-objdump -d sum1ton.o
 	```
 ![Objdump using -O1 format](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%201/objDump%20using%20-O1%20format.png)
 
-4.The Assembly Language code generated from the C code will be displayed in the terminal. Type ```/main``` to locate the main section of our code.  
+
+5. The Assembly Language code generated from the C code will be displayed in the terminal. Type ```/main``` to locate the main section of our code.
+
+
+6. Similarly to the second step, run the following command to compile the code using the RISC-V -Ofast GCC compiler. The subsequent steps will display the 	 
+generated assembly code, and you can type ```/main``` to locate the main section of our code:
+
+	```
+	riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c
+	```
+ ![Objdump using -Ofast format](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%201/objDump%20using%20-Ofast%20format.png)
+ 
 
 ### *Descriptions of the keyword used in command above *  
 * **-mabi=lp64:** Specifies the ABI (Application Binary Interface) as ```lp64```, which supports 64-bit integers, long, and pointer sizes. This ABI is intended for 64-bit RISC-V architecture.  
