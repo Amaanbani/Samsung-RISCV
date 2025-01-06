@@ -42,7 +42,13 @@ We need to compile the code again, but this time using the RISC-V GCC compiler. 
 	```
 	riscv64-unknown-elf-gcc -O1 -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c
 	```
-3. To execute the C code on your terminal, use the following command.:    
+3. The following command is used to display the file details of ```sum1ton.c``` in reverse chronological order, showing the most recently modified files last, along with information such as file permissions, ownership, size, and the timestamp of the last modification:
+
+	```
+	ls -ltr sum1ton.c
+ 	```
+
+4. To execute the C code on your terminal, use the following command.:    
 
 	```
 	riscv64-unknown-elf-objdump -d sum1ton.o
