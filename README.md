@@ -1,7 +1,7 @@
 # Samsung-RISCV
 
 <details>
-<summary><b>Task 1:</b>This Task involves reviewing C-based and RISC-V-based lab videos and performing the compilation of C code using both GCC and the RISC-V compiler</summary>
+<summary><b>Task 1 :</b> This Task involves reviewing C-based and RISC-V-based lab videos and performing the compilation of C code using both GCC and the RISC-V compiler</summary>
 
 ### C Language based LAB
 We need to follow the specified steps to compile any **.c** file on our machine:  
