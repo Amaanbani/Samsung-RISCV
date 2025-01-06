@@ -17,13 +17,13 @@ We need to follow the specified steps to compile any **.c** file on our machine:
 1. Open the bash terminal and navigate to the directory where you want to create your file. Then run the following command:
 
 	```
-	gedit sum_1ton.c
+	gedit sum1ton.c
 	```  
 2. This will open the editor, allowing you to write in the file you created. Enter the C code to calculate and print the sum of n numbers. After completing your code, press ```Ctrl + S``` to save your file, and then press ```Ctrl + W``` to close the editor.   
 3. To the C code on your terminal, run the following command:
 
 	```
-	gcc sum_1ton.c
+	gcc sum1ton.c
 	./a.out
 	```
 ![C Code compiled on gcc Compiler](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%201/C%20Code%20compiled%20on%20gcc%20compiler.png)
@@ -33,19 +33,19 @@ We need to compile the code again, but this time using the RISC-V GCC compiler. 
 1. Open the terminal and run the given command:  
 
 	```
-	cat sum_1ton.c
+	cat sum1ton.c
 	```
 ![cat Command](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%201/cat%20Command.png)
 
 2. Use the **cat** command to display the entire C code in the terminal. Next, run the following command to compile the code using the RISC-V GCC compiler:  
 
 	```
-	riscv64-unknown-elf-gcc -O1 -mabi=lp64 -march=rv64i -o sum_1ton.o sum_1ton.c
+	riscv64-unknown-elf-gcc -O1 -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c
 	```
 3. To execute the C code on your terminal, use the following command.:    
 
 	```
-	riscv64-unknown-elf-objdump -d sum_1ton.o
+	riscv64-unknown-elf-objdump -d sum1ton.o
 	```
 ![Objdump using -O1 format](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%201/objDump%20using%20-O1%20format.png)
 
