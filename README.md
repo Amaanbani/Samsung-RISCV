@@ -17,7 +17,7 @@ We need to follow the specified steps to compile any **.c** file on our machine:
 1. Open the bash terminal and navigate to the directory where you want to create your file. Then run the following command:
 
 	```
-	gedit sum1ton.c
+	leafpad sum1ton.c
 	```  
 2. This will open the editor, allowing you to write in the file you created. Enter the C code to calculate and print the sum of n numbers. After completing your code, press ```Ctrl + S``` to save your file, and then press ```Ctrl + W``` to close the editor.   
 3. To the C code on your terminal, run the following command:
