@@ -93,7 +93,7 @@ Here, the term **more aggressive optimization** in the context of compilers like
 
 
 <details>
-<summary><b>Task 2:</b>Performing SPIKE simulation and debugging the C code using Spike's interactive debugging mode.</summary> 
+<summary><b> Task 2 :</b>Performing SPIKE simulation and debugging the C code using Spike's interactive debugging mode.</summary> 
 
   
 ### What is SPIKE in RISCV?
