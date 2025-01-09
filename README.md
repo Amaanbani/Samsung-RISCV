@@ -10,6 +10,9 @@ The program focuses on the RISC-V architecture and utilizes open-source tools to
  **LinkedIN Profile:** [amaan-bani](https://www.linkedin.com/in/amaan-bani-324565331/)
 
 
+----------------------------------------------------------------------------------------------------------------
+
+
 <details>
 <summary><b>Task 1 :</b> This Task involves reviewing C-based and RISC-V-based lab videos and performing the compilation of C code using both GCC and the RISC-V compiler</summary>
 
@@ -84,7 +87,10 @@ generated assembly code, and you can type ```/main``` to locate the main section
 
 Here, the term **more aggressive optimization** in the context of compilers like GCC refers to a deeper and more complex set of transformations applied to the code in order to improve its performance and possibly reduce its size. The compiler uses more complex techniques that aims to generate faster executing code or code that occupies less memory. However, these optimizations typically increase the compilation time and can sometimes introduce bugs, making it harder to debug.
 </details>
-----------------------------------------
+
+
+----------------------------------------------------------------------------------------------------------------
+
 
 <details>
 <summary><b>Task 2:</b>Performing SPIKE simulation and debugging the C code using Spike's interactive debugging mode.</summary> 
