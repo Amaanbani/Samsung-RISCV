@@ -721,4 +721,74 @@ U-Type instructions are used for operations like loading upper immediate (LUI) a
 
 ----------------------------------------------------------------------------------------------------------------
 
+<details><summary><b>Task 4: </b> By using RISC-V Core: Verilog netlist and Testbench, perform an experiment of Functional Simulation using GTKWave and Observe the waveforms.</summary>
+<h3>Steps:</h3>
+1. Using suitable commands install the iverilog and GTKWave in ubuntu<br>
+2. Compile the RISC-V Core: Verilog netlist and Testbench<br>
+3. Observe the waveform output in GTKWave window<br>
+<h4>Installing iverilog and GTKWave in Ubuntu:</h4>
+<pre><code>sudo apt install iverilog gtkwave</code></pre>
+<h3>Simulate and run the verilog code</h3>
+<pre><code>iverilog -o iiitb_rv32i iiitb_rv32i.v iiitb_rv32i_tb.v
+./iiitb_rv32i
+gtkwave iiitb_rv32i.vcd</code></pre>
+<h4>Commands:</h4><br>
+<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/Commands.png" alt="Commands">
+<br><br>
+<h4>GTKWave Window:</h4><br>
+<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/GTKWave_Window.png" alt="GTKWave Window">
+<br><br>
+<h4>Hardcoded Instructions:</h4><br>
+<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/Instructions.png" alt="Hardcoded ISA">
+<br><br>
+<h3>Ouput Waveforms:</h3>
+<p>The output waveforms showing the instructions performed in a 5-stage pipelined architecture</p>
+<b><i>Instruction 1:</i></b><pre> ADD R6, R2, R1</pre>
+	<p>This instruction Adds values of registers R2 and R1 and stores the result in register R6, In this case 1 + 2 = 3.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/01_ADD_r6_r1_r2.png" alt="ADD R6, R2, R1">
+<br><br><b><i>Instruction 2:</i></b><pre> SUB R7, R1, R2</pre>
+	<p>This instruction subtracts value of register R2 from R1 and stores the result in register R7, In this case 1 - 2 = -1.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/02_SUB_r7_r1_r2.png" alt="SUB R7, R1, R2">
+<br><br><b><i>Instruction 3:</i></b><pre> AND R8, R1, R3</pre>
+	<p>This instruction executes bitwise "AND" between values of registers R1 and R3 and stores the result in register R8, In this case 01 & 11 = 01(1 in decimal).</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/03_AND_r8_r1_r3.png" alt="AND R8, R1, R3">
+<br><br><b><i>Instruction 4:</i></b><pre> OR R9, R2, R5</pre>
+	<p>This instruction executes bitwise "OR" between values of registers R2 and R5 and stores the result in register R9, In this case 010 | 101 = 111(7 in decimal).</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/04_OR_r9_r2_r5.png" alt="OR R9, R2, R5">
+<br><br><b><i>Instruction 5:</i></b><pre> XOR R10, R1, R4</pre>
+	<p>This instruction executes bitwise XOR between values of registers R1 and R4 and stores the result in register R10, In this case 001 ^ 100 = 101(5 in decimal).</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/05_XOR_r10_r1_r4.png" alt="XOR R10, R1, R4">
+<br><br><b><i>Instruction 6:</i></b><pre> SLT R11, R2, R4</pre>
+	<p>This instruction checks the values of registers R2 and R4 if value of R2 is less than value of R4, then register R11 is set to 1, In this case 2<4 so R11 is set to 1.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/06_SLT_r11_r2_r4.png" alt="SLT R11, R2, R4">
+<br><br><b><i>Instruction 7:</i></b><pre> ADDI R12, R4, 5</pre>
+	<p>This instruction adds the immediate data 5 to the value in register R4 and stores the result in register R12, In this case 4 + 5 = 9.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/07_ADDI_r12_r4_5.png" alt="ADDI R12, R4, 5">
+<br><br><b><i>Instruction 8:</i></b><pre> SW R3, R1, 2</pre>
+	<p>This instruction stores the register data @R1+2 into the memory, In this case 1 + 2 = 3.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/08_SW_r3_r1_2.png" alt="SW R3, R1, 2">
+<br><br><b><i>Instruction 9:</i></b><pre> LW R13, R1, 2</pre>
+	<p>This instruction loads the register data @R1+2 into the register R13, In this case 1 + 2 = 3.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/09_LW_r13_r1_2.png" alt="LW R13, R1, 2">
+<br><br><b><i>Instruction 10:</i></b><pre> BEQ R0, R0, 15</pre>
+	<p>This instruction Branches to 15 instructions ahead of current instruction if values of registers R0 equals R0, so Program Counter will be incremented by 15, In this case PC is 10 so new PC value will be 10+15=25.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/10_BEQ_r0_r0_15.png" alt="BEQ R0, R0, 15">
+<br><br><b><i>Instruction 11:</i></b><pre> ADD R14, R2 R2</pre>
+	<p> This instruction Adds values of registers R2 and R2 and stores the result in register R14, In this case 2 + 2 = 4.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/11_ADD_r14_r2_r2.png" alt="ADD R14, R2 R2">
+<br><br><b><i>Instruction 12:</i></b><pre> BNE R0, R1, 20</pre>
+	<p>This instruction Branches to 20 instructions ahead of current instruction if values of registers R0 and R1 don't match , so Program Counter will be incremented by 20, In this case PC is 28 so new PC value will be 28+20=48.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/12_BNE_r0_r1_20.png" alt="BNE R0, R1, 20">
+<br><br><b><i>Instruction 13:</i></b><pre> ADDI R12, R4, 5</pre>
+	<p>This instruction adds the immediate data 5 to the value in register R4 and stores the result in register R12, In this case 4 + 5 = 9.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/13_ADDI_r12_r4_5.png" alt="ADDI R12, R4, 5">
+<br><br><b><i>Instruction 14:</i></b><pre> SLL R15, R1, R2</pre>
+	<p>This instruction shifts the value of register R1 to left by 2, (001)&lt;&lt;2=(100)4.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/14_SLL_r15_r1_r2.png" alt="SLL R15, R1, R2">
+<br><br><b><i>Instruction 15:</i></b><pre> SRL R16, R4, R2</pre>
+	<p>This instruction shifts the value of register R1 to right by 2, (100)&gt;&gt;2=(001)1.</p>
+	<img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/15_SRL_r16_r4_r2.png" alt="SRL R16, R4, R2">
+<br><br>
+</details>
 
+----------------------------------------------------------------------------------------------------------------
