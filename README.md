@@ -223,7 +223,7 @@ Consider the `lui` (Load Upper Immediate) instruction:
 - **Assembly**: `lui x5, 0x12345`
 - **Encoding**: The immediate value `0x12345`in the instruction’s immediate field and specifies `x5` as the destination register in the rd field.
 - **Machine Execution**: Loads the upper 20 bits of `0x12345` into the upper 20 bits of register `x5` .
-   ## Arithmetic Instructions
+## Arithmetic Instructions
 - **ADD**:  Performs addition of two registers and stores the result in a third.
   - Example: `ADD rd, rs1, rs2` (rd = rs1 + rs2)
 - **ADDI**: Adds a register and an immediate value (constant) and stores the result.
@@ -721,7 +721,7 @@ U-Type instructions are used for operations like loading upper immediate (LUI) a
 
 ----------------------------------------------------------------------------------------------------------------
 
-<details><summary><b>Task 4: </b> By using RISC-V Core: Verilog netlist and Testbench, perform an experiment of Functional Simulation using GTKWave and Observe the waveforms.</summary>
+<details><summary><b>Task 4 : </b> By using RISC-V Core: Verilog netlist and Testbench, perform an experiment of Functional Simulation using GTKWave and Observe the waveforms.</summary>
 <h3>Steps:</h3>
 1. Using suitable commands install the iverilog and GTKWave in ubuntu<br>
 2. Compile the RISC-V Core: Verilog netlist and Testbench<br>
