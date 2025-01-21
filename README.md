@@ -721,27 +721,27 @@ U-Type instructions are used for operations like loading upper immediate (LUI) a
 
 ----------------------------------------------------------------------------------------------------------------
 
-<details><summary><b>Task 4 : </b> By using RISC-V Core: Verilog netlist and Testbench, perform an experiment of Functional Simulation using GTKWave and Observe the waveforms.</summary>
-<h3>Steps:</h3>
-1. Using suitable commands install the iverilog and GTKWave in ubuntu<br>
-2. Compile the RISC-V Core: Verilog netlist and Testbench<br>
-3. Observe the waveform output in GTKWave window<br>
-<h4>Installing iverilog and GTKWave in Ubuntu:</h4>
+<details><summary><b>Task 4 : </b> By using RISC-V Core: Verilog netlist and Testbench, perform an experiment of Functional Simulation using GTKWave and Observe the waveforms</summary>
+<h3>Steps to perform functional simulation for RISC-V : </h3>
+1. Using suitable commands install the iverilog and GTKWave in ubuntu.<br>
+2. Compile the RISC-V Core: Verilog netlist and Testbench.<br>
+3. Observe the waveform output in GTKWave window.<br>
+<h3>Installing iverilog and GTKWave in Ubuntu : </h3>
 <pre><code>sudo apt install iverilog gtkwave</code></pre>
-<h3>Simulate and run the verilog code</h3>
+<h3>Simulate and run the verilog code : </h3>
 <pre><code>iverilog -o iiitb_rv32i iiitb_rv32i.v iiitb_rv32i_tb.v
 ./iiitb_rv32i
 gtkwave iiitb_rv32i.vcd</code></pre>
-<h4>Commands:</h4><br>
+<h4>Commands : </h4><br>
 <img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/Commands.png" alt="Commands">
 <br><br>
-<h4>GTKWave Window:</h4><br>
+<h4>GTKWave Window : </h4><br>
 <img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/GTKWave_Window.png" alt="GTKWave Window">
 <br><br>
-<h4>Hardcoded Instructions:</h4><br>
+<h4>Hardcoded Instructions : </h4><br>
 <img src="https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%204/Instructions.png" alt="Hardcoded ISA">
 <br><br>
-<h3>Ouput Waveforms:</h3>
+<h3>Ouput Waveforms : </h3>
 <p>The output waveforms showing the instructions performed in a 5-stage pipelined architecture</p>
 <b><i>Instruction 1:</i></b><pre> ADD R6, R2, R1</pre>
 	<p>This instruction Adds values of registers R2 and R1 and stores the result in register R6, In this case 1 + 2 = 3.</p>
