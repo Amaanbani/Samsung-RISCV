@@ -792,3 +792,116 @@ gtkwave iiitb_rv32i.vcd</code></pre>
 </details>
 
 ----------------------------------------------------------------------------------------------------------------
+
+<details>
+<summary><b> Task 5 :</b> Implement a Digital Circuit using VSDSquadron Mini RISC-V SoC device, refering to CH32V003F4U6 and check whether the building and uploading of C program file on RISCV processor works </summary>
+
+## 4x4 Multiplexer (MUX) Wiring and Implementation for VSDSquadron, a Mini RISC-V SoC development kit (CH32V003F4U6)
+
+
+### Overview  
+This project implements a *4x4 Multiplexer (MUX)* using the *VSDSquadron Mini, a RISC-V-based SoC development kit (CH32V003F4U6). A **MUX* selects one of the multiple input signals and forwards it to a single output. The *4x4 MUX* takes *four data inputs* and selects one using *two selection lines*.  
+This project demonstrates GPIO-based *MUX simulation in software, implemented using **PlatformIO IDE*, with selection via push buttons and output displayed using an LED.
+
+### Components Required  
+- *VSDSquadron Mini RISC-V SoC* ( CH32V003F4U6 ) 
+- *2 Push Buttons* (2 for selection inputs)  
+- *1 LED* (Displays the selected output)  
+- *Resistor* (220Ω for LED)  
+- *Breadboard & Jumper Wires*  
+- *VS Code with PlatformIO IDE*  
+
+### Hardware Connections  
+#### Inputs  
+- *Data Inputs (D0-D3)* → GPIO *PC0 - PC3* (Connected via DIP switches/external sources or logic signals.)  
+- *Selection Inputs (S0, S1)* → GPIO *PC4, PC5* (Push buttons*)  
+
+#### Output  
+- *Multiplexer Output (Y)* → GPIO *PC6* (Drives an *LED*, lights up when selected input is HIGH and off when selected input is LOW)  
+
+#### Power & Stability  
+- *3.3V and GND connections* ensure stable operation of all components.
+
+
+###  Wiring Diagram & Connections
+
+![4x4_Multiplexer](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%205/4x4_Multiplexer.jpg)
+
+
+| Signal | Pin | Connection |
+|---------|------|----------------|
+| *D0* | PC0 | Data Input 0 |
+| *D1* | PC1 | Data Input 1 |
+| *D2* | PC2 | Data Input 2 |
+| *D3* | PC3 | Data Input 3 |
+| *S0* | PC4 | Select Line 0 (Push Button) |
+| *S1* | PC5 | Select Line 1 (Push Button) |
+| *Y*  | PC6 | Output (LED) |
+| *VCC* | 3.3V | Power |
+| *GND* | GND | Ground |
+
+
+
+
+### C Implementation for CH32V003F4U6 ( VSDSquadron Mini RISC-V SoC device )
+
+---
+	#include "ch32v003fun.h"  // Include CH32V003 RISC-V support
+	#include <stdint.h>
+
+	  // Define GPIO pins
+	#define D0 PC0
+	#define D1 PC1
+	#define D2 PC2
+	#define D3 PC3
+	#define S0 PC4
+	#define S1 PC5
+	#define Y  PC6
+
+	void GPIO_Init(void) {
+	    RCC->APB2PCENR |= RCC_APB2Periph_GPIOC;
+	    GPIOC->CFGLR &= ~(0xF << (D0 * 4)); // PC0-PC3 as input
+	    GPIOC->CFGLR &= ~(0xF << (S0 * 4)); // PC4-PC5 as input
+	    GPIOC->CFGLR &= ~(0xF << (Y * 4));  // PC6 output
+	    GPIOC->CFGLR |= (0x3 << (Y * 4));   // Output push-pull
+	}
+
+	uint8_t Read_MUX_Output(void) {
+ 		uint8_t sel0 = (GPIOC->INDR & (1 << S0)) ? 1 : 0;
+  		  uint8_t sel1 = (GPIOC->INDR & (1 << S1)) ? 1 : 0;
+  		  uint8_t data = 0;
+    
+	  switch ((sel1 << 1) | sel0) {
+      		  case 0b00: data = (GPIOC->INDR & (1 << D0)) ? 1 : 0; break;
+        	  case 0b01: data = (GPIOC->INDR & (1 << D1)) ? 1 : 0; break;
+       		  case 0b10: data = (GPIOC->INDR & (1 << D2)) ? 1 : 0; break;
+        	  case 0b11: data = (GPIOC->INDR & (1 << D3)) ? 1 : 0; break;
+	    }
+    
+	 return data;
+	}
+
+	void Set_Output(uint8_t value) {
+    		if (value) {
+        	GPIOC->BSHR = (1 << Y); // Set output high
+	    } else {
+	        GPIOC->BSHR = (1 << (Y + 16)); // Set output low
+	    }
+	}
+
+    int main(void) {
+    	 SystemInit();
+    	GPIO_Init();
+
+ 	while (1) {
+        	uint8_t output = Read_MUX_Output();
+        	Set_Output(output);
+   	 }
+	}
+
+---
+
+
+</details>
+
+----------------------------------------------------------------------------------------------------------------
