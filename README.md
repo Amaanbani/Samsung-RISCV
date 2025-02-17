@@ -804,7 +804,8 @@ This project implements a *4x1 Multiplexer (MUX)* using the *VSDSquadron Mini, a
 This project demonstrates GPIO-based *MUX simulation in software, implemented using **PlatformIO IDE*, with selection via push buttons and output displayed using an LED.
 
 ### Components Required  
-- *VSDSquadron Mini RISC-V SoC* ( CH32V003F4U6 ) 
+- *VSDSquadron Mini RISC-V SoC* ( CH32V003F4U6 )
+- Input Data Signals ( Using DIP switches or External Source)
 - *2 Push Buttons* (2 for selection inputs)  
 - *1 LED* (Displays the selected output)  
 - *Resistors* (Two 10Ω for push buttons and 220Ω for LED)  
@@ -814,7 +815,7 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 ### Hardware Connections  
 #### Inputs  
 - *Data Inputs (D0-D3)* → GPIO *PC0 - PC3* (Connected via DIP switches/external sources or logic signals.)  
-- *Selection Inputs (S0, S1)* → GPIO *PC4, PC5* (Push buttons*)  
+- *Selection Inputs (S0, S1)* → GPIO *PC4, PC5* (Push buttons with 10Ω resistors each*)  
 
 #### Output  
 - *Multiplexer Output (Y)* → GPIO *PC6* (Drives an *LED*, lights up when selected input is HIGH and off when selected input is LOW)  
@@ -855,61 +856,78 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 
 
 
-### C Implementation for CH32V003F4U6 ( VSDSquadron Mini RISC-V SoC device )
+### C Implementation for 4x1_MUX in CH32V003F4U6 ( VSDSquadron Mini RISC-V SoC device )
 
 ---
-	#include "ch32v003fun.h"  // Include CH32V003 RISC-V support
+	#include "ch32v00x.h"  // Include CH32V003 RISC-V support
 	#include <stdint.h>
 
-	  // Define GPIO pins
-	#define D0 PC0
-	#define D1 PC1
-	#define D2 PC2
-	#define D3 PC3
-	#define S0 PC4
-	#define S1 PC5
-	#define Y  PC6
+	// Define GPIO pins
+	#define D0 GPIO_Pin_0
+	#define D1 GPIO_Pin_1
+	#define D2 GPIO_Pin_2
+	#define D3 GPIO_Pin_3
+	#define S0 GPIO_Pin_4
+	#define S1 GPIO_Pin_5
+	#define Y  GPIO_Pin_6  // Output
 
-	void GPIO_Init(void) {
-	    RCC->APB2PCENR |= RCC_APB2Periph_GPIOC;
-	    GPIOC->CFGLR &= ~(0xF << (D0 * 4)); // PC0-PC3 as input
-	    GPIOC->CFGLR &= ~(0xF << (S0 * 4)); // PC4-PC5 as input
-	    GPIOC->CFGLR &= ~(0xF << (Y * 4));  // PC6 output
-	    GPIOC->CFGLR |= (0x3 << (Y * 4));   // Output push-pull
+	void My_GPIO_Init(void) {  // Renamed to avoid conflict with library function
+  	 	 // Enable GPIOC clock
+  	 	 RCC->APB2PCENR |= RCC_APB2Periph_GPIOC;
+
+  	 	 GPIO_InitTypeDef GPIO_InitStructure;
+
+   	 	 // Configure Data inputs (D0-D3) as input pull-down
+  	 	 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;  // Input with pull-down resistor
+		 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+
+   		 GPIO_InitStructure.GPIO_Pin = D0 | D1 | D2 | D3;
+  	         GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+   		 // Configure Select inputs (S0, S1) as input pull-down
+   		 GPIO_InitStructure.GPIO_Pin = S0 | S1;
+   		 GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+    		 // Configure Output (Y) as output push-pull
+   		 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  // Output push-pull
+    		 GPIO_InitStructure.GPIO_Pin = Y;
+   		 GPIO_Init(GPIOC, &GPIO_InitStructure);
 	}
 
 	uint8_t Read_MUX_Output(void) {
- 		uint8_t sel0 = (GPIOC->INDR & (1 << S0)) ? 1 : 0;
-  		  uint8_t sel1 = (GPIOC->INDR & (1 << S1)) ? 1 : 0;
-  		  uint8_t data = 0;
-    
-	  switch ((sel1 << 1) | sel0) {
-      		  case 0b00: data = (GPIOC->INDR & (1 << D0)) ? 1 : 0; break;
-        	  case 0b01: data = (GPIOC->INDR & (1 << D1)) ? 1 : 0; break;
-       		  case 0b10: data = (GPIOC->INDR & (1 << D2)) ? 1 : 0; break;
-        	  case 0b11: data = (GPIOC->INDR & (1 << D3)) ? 1 : 0; break;
-	    }
-    
-	 return data;
+  		 uint8_t sel0 = (GPIOC->INDR & (1 << S0)) ? 1 : 0;
+   		 uint8_t sel1 = (GPIOC->INDR & (1 << S1)) ? 1 : 0;
+   		 uint8_t data = 0;
+
+   		 // Select the corresponding data pin (D0-D3) based on S0 and S1
+   		 switch ((sel1 << 1) | sel0) {
+    		    case 0b00: data = (GPIOC->INDR & (1 << D0)) ? 1 : 0; break;
+		    case 0b01: data = (GPIOC->INDR & (1 << D1)) ? 1 : 0; break;
+    		    case 0b10: data = (GPIOC->INDR & (1 << D2)) ? 1 : 0; break;
+		    case 0b11: data = (GPIOC->INDR & (1 << D3)) ? 1 : 0; break;
+    		}
+
+    		return data;
 	}
 
 	void Set_Output(uint8_t value) {
-    		if (value) {
-        	GPIOC->BSHR = (1 << Y); // Set output high
-	    } else {
-	        GPIOC->BSHR = (1 << (Y + 16)); // Set output low
-	    }
+  		if (value) {
+      		GPIOC->BSHR = (1 << Y); // Set output high
+   		 } else {
+      		  GPIOC->BSHR = (1 << (Y + 16)); // Set output low
+   		 }
 	}
 
-    int main(void) {
-    	 SystemInit();
-    	GPIO_Init();
+	int main(void) {
+  		  SystemInit();  // Initialize system
+   		 My_GPIO_Init();   // Configure GPIO
 
- 	while (1) {
-        	uint8_t output = Read_MUX_Output();
-        	Set_Output(output);
-   	 }
+  		  while (1) {
+   		     uint8_t output = Read_MUX_Output();
+   		     Set_Output(output);
+   		 }
 	}
+
 
 ---
 
@@ -917,3 +935,118 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 </details>
 
 ----------------------------------------------------------------------------------------------------------------
+
+<details>
+<summary><b> Task 6 :</b> Application Video of a Digital Circuit using VSDSquadron Mini RISC-V SoC device, refering to CH32V003F4U6. </summary>
+
+## 4x1 Multiplexer (MUX) without any input signals using a VSDSquadron Mini RISC-V SoC development kit (CH32V003F4U6)
+
+### Overview  
+This project implements a *4x1 Multiplexer (MUX)* using the *VSDSquadron Mini, a RISC-V-based SoC development kit (CH32V003F4U6). A **MUX* selects one of the multiple input signals and forwards it to a single output.Here the input values D3,D2,D1,D0 are assigned and incremented after 5 seconds in a loop from 0000(0) to 1111(15) internally through the code and selects one using *two selection lines*.  
+This project demonstrates GPIO-based *MUX simulation in software, implemented using **PlatformIO IDE*, with selection via push buttons and output displayed using an LED.
+
+### Components Required  
+- *VSDSquadron Mini RISC-V SoC* ( CH32V003F4U6 )
+- *2 Push Buttons* (2 for selection inputs)  
+- *1 LED* (Displays the selected output)  
+- *Resistors* (Two 10Ω for push buttons and 220Ω for LED)  
+- *Breadboard & Jumper Wires*  
+- *VS Code with PlatformIO IDE*  
+
+### Hardware Connections  
+#### Inputs    
+- *Selection Inputs (S0, S1)* → GPIO *PC4, PC5* (Push buttons with 10Ω resistors each*)  
+
+#### Output  
+- *Multiplexer Output (Y)* → GPIO *PC6* (Drives an *LED*, lights up when selected input is HIGH and off when selected input is LOW)  
+
+#### Power & Stability  
+- *3.3V and GND connections* ensure stable operation of all components.
+
+### C Implementation for 4x1_MUX in CH32V003F4U6 ( VSDSquadron Mini RISC-V SoC device ) with internally generated input signal
+
+---
+
+	#include "ch32v00x.h"  // Include CH32V003 RISC-V support
+	#include <stdint.h>
+	#include <stdio.h>
+
+	#define D0 0
+	#define D1 1
+	#define D2 2
+	#define D3 3
+	#define S0 4
+	#define S1 5
+	#define Y  6
+
+	// Renamed to avoid conflict with the SDK's GPIO_Init
+	void My_GPIO_Init(void) {
+ 	   // Enable GPIOC clock
+	    RCC->APB2PCENR |= RCC_APB2Periph_GPIOC;
+
+ 	   // Configure PC6 (Y) as output
+ 	   GPIOC->CFGLR &= ~(0xF << (Y * 4));  // Clear previous configuration
+	    GPIOC->CFGLR |= (0x3 << (Y * 4));   // Output push-pull
+	}
+
+	// Simulated input variables
+	uint8_t simulated_D[4] = {0, 0, 0, 0};  // Simulated Data inputs (D0-D3)
+	uint8_t simulated_S[2] = {0, 0};        // Simulated Select inputs (S0-S1)
+
+	uint8_t Read_MUX_Output(void) {
+ 	   uint8_t sel = (simulated_S[1] << 1) | simulated_S[0];
+	    return simulated_D[sel];  // Select the corresponding input
+	}
+
+	void Set_Output(uint8_t value) {
+	    if (value) {
+	        GPIOC->BSHR = (1 << Y); // Set output high
+	    } else {
+	        GPIOC->BSHR = (1 << (Y + 16)); // Set output low
+	    }
+	}
+
+	// Delay function (busy-wait loop instead of usleep)
+	void delay(uint32_t time) {
+	    while (time--) {
+	        __NOP();  // No operation instruction for delay (useful for small delays)
+	    }
+	}
+
+	void Simulate_Input_Toggle(void) {
+	    for (uint8_t i = 0; i < 4; i++) {
+	        for (uint8_t j = 0; j < 4; j++) {
+            // Toggle selection lines (S0, S1)
+            simulated_S[0] = j & 0x01;
+            simulated_S[1] = (j >> 1) & 0x01;
+
+            // Toggle data inputs (D0-D3)
+            simulated_D[0] = (i & 0x01) ? 1 : 0;
+            simulated_D[1] = (i & 0x02) ? 1 : 0;
+            simulated_D[2] = (i & 0x04) ? 1 : 0;
+            simulated_D[3] = (i & 0x08) ? 1 : 0;
+
+            // Read MUX output and set LED accordingly
+            uint8_t output = Read_MUX_Output();
+            Set_Output(output);
+
+            // Print simulated state (for debugging)
+            printf("D: [%d %d %d %d] | S: [%d %d] => Y: %d\n",
+                   simulated_D[3], simulated_D[2], simulated_D[1], simulated_D[0],
+                   simulated_S[1], simulated_S[0], output);
+
+            delay(5000000); // 5-second delay (tune the value based on your MCU clock speed)
+ 	       }
+	    }
+	}
+
+	int main(void) {
+	    SystemInit();    // Initialize the system (set up the MCU)
+	    My_GPIO_Init();  // Initialize GPIOs (renamed)
+
+ 	   while (1) {
+ 	       Simulate_Input_Toggle();
+	    }
+	}
+
+---
