@@ -859,74 +859,60 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 ### C Implementation for 4x1_MUX in CH32V003F4U6 ( VSDSquadron Mini RISC-V SoC device )
 
 ---
-	#include "ch32v00x.h"  // Include CH32V003 RISC-V support
-	#include <stdint.h>
+	#include <stdio.h>
+	#include<debug.h>
+	#include <ch32v00x.h>
 
-	// Define GPIO pins
-	#define D0 GPIO_Pin_0
-	#define D1 GPIO_Pin_1
-	#define D2 GPIO_Pin_2
-	#define D3 GPIO_Pin_3
-	#define S0 GPIO_Pin_4
-	#define S1 GPIO_Pin_5
-	#define Y  GPIO_Pin_6  // Output
+	void GPIO_Config(void)
+	{
+	    GPIO_InitTypeDef GPIO_InitStructure = {0};
+	    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); // Enable clock for Port C
 
-	void My_GPIO_Init(void) {  // Renamed to avoid conflict with library function
-  	 	 // Enable GPIOC clock
-  	 	 RCC->APB2PCENR |= RCC_APB2Periph_GPIOC;
+	    // Inputs: I0, I1, I2, I3
+	    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
+	    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+ 	    GPIO_Init(GPIOC, &GPIO_InitStructure);
 
-  	 	 GPIO_InitTypeDef GPIO_InitStructure;
+	    // Control: S0, S1
+	    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5;
+	    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+	    GPIO_Init(GPIOC, &GPIO_InitStructure);
 
-   	 	 // Configure Data inputs (D0-D3) as input pull-down
-  	 	 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;  // Input with pull-down resistor
-		 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 	   // Output: Y (MUX Output)
+	    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+	    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	    GPIO_Init(GPIOC, &GPIO_InitStructure);
+		}
 
-   		 GPIO_InitStructure.GPIO_Pin = D0 | D1 | D2 | D3;
-  	         GPIO_Init(GPIOC, &GPIO_InitStructure);
+			int main()
+		{
+ 	 	  uint8_t input_value = 0;
+ 	  	  uint8_t s0, s1;
 
-   		 // Configure Select inputs (S0, S1) as input pull-down
-   		 GPIO_InitStructure.GPIO_Pin = S0 | S1;
-   		 GPIO_Init(GPIOC, &GPIO_InitStructure);
+  	 	 GPIO_Config();
+  		  while(1)
+  	  {
+  	      // Read control lines
+        	s0 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_4);
+        	s1 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_5);
 
-    		 // Configure Output (Y) as output push-pull
-   		 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  // Output push-pull
-    		 GPIO_InitStructure.GPIO_Pin = Y;
-   		 GPIO_Init(GPIOC, &GPIO_InitStructure);
-	}
+       		 // Select input based on S0 and S1
+        	if (s0 == RESET && s1 == RESET)
+       		     input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_0); // I0
+       		else if (s0 == RESET && s1 == SET)
+         	     input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_1); // I1
+        	else if (s0 == SET && s1 == RESET)
+         	     input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_2); // I2
+     	        else
+     	             input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_3); // I3
 
-	uint8_t Read_MUX_Output(void) {
-  		 uint8_t sel0 = (GPIOC->INDR & (1 << S0)) ? 1 : 0;
-   		 uint8_t sel1 = (GPIOC->INDR & (1 << S1)) ? 1 : 0;
-   		 uint8_t data = 0;
+       		 // Output selected input to Y
+       		 GPIO_WriteBit(GPIOC, GPIO_Pin_6, input_value);
 
-   		 // Select the corresponding data pin (D0-D3) based on S0 and S1
-   		 switch ((sel1 << 1) | sel0) {
-    		    case 0b00: data = (GPIOC->INDR & (1 << D0)) ? 1 : 0; break;
-		    case 0b01: data = (GPIOC->INDR & (1 << D1)) ? 1 : 0; break;
-    		    case 0b10: data = (GPIOC->INDR & (1 << D2)) ? 1 : 0; break;
-		    case 0b11: data = (GPIOC->INDR & (1 << D3)) ? 1 : 0; break;
-    		}
-
-    		return data;
-	}
-
-	void Set_Output(uint8_t value) {
-  		if (value) {
-      		GPIOC->BSHR = (1 << Y); // Set output high
-   		 } else {
-      		  GPIOC->BSHR = (1 << (Y + 16)); // Set output low
+       		 Delay_Ms(1000);// Delay before next check
    		 }
 	}
 
-	int main(void) {
-  		  SystemInit();  // Initialize system
-   		 My_GPIO_Init();   // Configure GPIO
-
-  		  while (1) {
-   		     uint8_t output = Read_MUX_Output();
-   		     Set_Output(output);
-   		 }
-	}
 
 
 ---
@@ -966,87 +952,65 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 ### C Implementation for 4x1_MUX in CH32V003F4U6 ( VSDSquadron Mini RISC-V SoC device ) with internally generated input signal
 
 ---
-
-	#include "ch32v00x.h"  // Include CH32V003 RISC-V support
-	#include <stdint.h>
 	#include <stdio.h>
+	#include <debug.h>
+	#include <ch32v00x.h>
 
-	#define D0 0
-	#define D1 1
-	#define D2 2
-	#define D3 3
-	#define S0 4
-	#define S1 5
-	#define Y  6
+	void GPIO_Config(void)
+	{
+	    GPIO_InitTypeDef GPIO_InitStructure = {0};
+	    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); // Enable clock for Port C
 
-	// Renamed to avoid conflict with the SDK's GPIO_Init
-	void My_GPIO_Init(void) {
- 	   // Enable GPIOC clock
-	    RCC->APB2PCENR |= RCC_APB2Periph_GPIOC;
+	    // Control: S0, S1 (input pins)
+	    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5;
+	    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; // Input with pull-up
+	    GPIO_Init(GPIOC, &GPIO_InitStructure);
 
- 	   // Configure PC6 (Y) as output
- 	   GPIOC->CFGLR &= ~(0xF << (Y * 4));  // Clear previous configuration
-	    GPIOC->CFGLR |= (0x3 << (Y * 4));   // Output push-pull
+	    // Output: Y (MUX output)
+ 	   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+     	   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; // Push-pull output
+	   GPIO_Init(GPIOC, &GPIO_InitStructure);
+		}
+
+	int main()
+		{
+ 	   uint8_t  input_input = 0;
+ 	   uint8_t s0, s1;
+
+ 	   GPIO_Config();
+	    while(1)
+	    {
+  		  for (uint8_t i = 0; i < 16; i++)
+    	 	   {
+      	                  // Set input values dynamically from 0000 to 1111 (0 to 15 in decimal)
+    	                  uint8_t input0 = (i >> 0) & 1;  // Extract bit 0
+    			  uint8_t input1 = (i >> 1) & 1;  // Extract bit 1
+   	   	          uint8_t input2 = (i >> 2) & 1;  // Extract bit 2
+   		          uint8_t input3 = (i >> 3) & 1;  // Extract bit 3
+
+       	     // Read control lines (S0 and S1)
+       	     s0 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_4);
+       	     s1 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_5);
+
+            // Select input based on S0 and S1
+            if (s0 == RESET && s1 == RESET)
+                input_value = input0; // Select I0
+            else if (s0 == RESET && s1 == SET)
+                input_value = input1; // Select I1
+            else if (s0 == SET && s1 == RESET)
+                input_value = input2; // Select I2
+            else
+                input_value = input3; // Select I3
+
+            // Output the selected input value to the output pin Y
+            GPIO_WriteBit(GPIOC, GPIO_Pin_6, input_value);
+	     
+ 	       Delay_Ms(100); // Delay before the next selection
+ 	   }
 	}
 
-	// Simulated input variables
-	uint8_t simulated_D[4] = {0, 0, 0, 0};  // Simulated Data inputs (D0-D3)
-	uint8_t simulated_S[2] = {0, 0};        // Simulated Select inputs (S0-S1)
-
-	uint8_t Read_MUX_Output(void) {
- 	   uint8_t sel = (simulated_S[1] << 1) | simulated_S[0];
-	    return simulated_D[sel];  // Select the corresponding input
-	}
-
-	void Set_Output(uint8_t value) {
-	    if (value) {
-	        GPIOC->BSHR = (1 << Y); // Set output high
-	    } else {
-	        GPIOC->BSHR = (1 << (Y + 16)); // Set output low
-	    }
-	}
-
-	// Delay function (busy-wait loop instead of usleep)
-	void delay(uint32_t time) {
-	    while (time--) {
-	        __NOP();  // No operation instruction for delay (useful for small delays)
-	    }
-	}
-
-	void Simulate_Input_Toggle(void) {
-	    for (uint8_t i = 0; i < 4; i++) {
-	        for (uint8_t j = 0; j < 4; j++) {
-            // Toggle selection lines (S0, S1)
-            simulated_S[0] = j & 0x01;
-            simulated_S[1] = (j >> 1) & 0x01;
-
-            // Toggle data inputs (D0-D3)
-            simulated_D[0] = (i & 0x01) ? 1 : 0;
-            simulated_D[1] = (i & 0x02) ? 1 : 0;
-            simulated_D[2] = (i & 0x04) ? 1 : 0;
-            simulated_D[3] = (i & 0x08) ? 1 : 0;
-
-            // Read MUX output and set LED accordingly
-            uint8_t output = Read_MUX_Output();
-            Set_Output(output);
-
-            // Print simulated state (for debugging)
-            printf("D: [%d %d %d %d] | S: [%d %d] => Y: %d\n",
-                   simulated_D[3], simulated_D[2], simulated_D[1], simulated_D[0],
-                   simulated_S[1], simulated_S[0], output);
-
-            delay(5000000); // 5-second delay (tune the value based on your MCU clock speed)
- 	       }
-	    }
-	}
-
-	int main(void) {
-	    SystemInit();    // Initialize the system (set up the MCU)
-	    My_GPIO_Init();  // Initialize GPIOs (renamed)
-
- 	   while (1) {
- 	       Simulate_Input_Toggle();
-	    }
-	}
-
+	
+	
+		
+	
 ---
