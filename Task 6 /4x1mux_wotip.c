@@ -52,5 +52,6 @@
             GPIO_WriteBit(GPIOC, GPIO_Pin_6, input_value);
 	     
  	       Delay_Ms(100); // Delay before the next selection
- 	   }
+ 		   }
+		}
 	}
