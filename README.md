@@ -891,27 +891,27 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 
   	 	 GPIO_Config();
   		  while(1)
-  	  {
-  	      // Read control lines
-        	s0 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_4);
-        	s1 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_5);
+  		  {
+	  	      // Read control lines
+	        	s0 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_4);
+	        	s1 = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_5);
 
-       		 // Select input based on S0 and S1
-        	if (s0 == RESET && s1 == RESET)
-       		     input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_0); // I0
-       		else if (s0 == RESET && s1 == SET)
-         	     input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_1); // I1
-        	else if (s0 == SET && s1 == RESET)
-         	     input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_2); // I2
-     	        else
-     	             input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_3); // I3
+	       		 // Select input based on S0 and S1
+	        	if (s0 == RESET && s1 == RESET)
+	       		     input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_0); // I0
+	       		else if (s0 == RESET && s1 == SET)
+	         	     input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_1); // I1
+ 		       	else if (s0 == SET && s1 == RESET)
+ 	        	     input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_2); // I2
+ 	    	        else
+ 	    	             input_value = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_3); // I3
 
-       		 // Output selected input to Y
-       		 GPIO_WriteBit(GPIOC, GPIO_Pin_6, input_value);
+   	    		 // Output selected input to Y
+   	    		 GPIO_WriteBit(GPIOC, GPIO_Pin_6, input_value);
 
-       		 Delay_Ms(1000);// Delay before next check
-   		 }
-	}
+ 	      		 Delay_Ms(1000);// Delay before next check
+ 	  		 }
+		}
 
 
 
@@ -1008,7 +1008,7 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 		 	       Delay_Ms(100); // Delay before the next selection
 		 	   }
 			}
-
+		}
 	
 	
 		
