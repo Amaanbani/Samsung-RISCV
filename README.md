@@ -796,18 +796,18 @@ gtkwave iiitb_rv32i.vcd</code></pre>
 <details>
 <summary><b> Task 5 :</b> Implement a Digital Circuit using VSDSquadron Mini RISC-V SoC device, refering to CH32V003F4U6 and check whether the building and uploading of C program file on RISCV processor works </summary>
 
-## 4x4 Multiplexer (MUX) Wiring and Implementation for VSDSquadron, a Mini RISC-V SoC development kit (CH32V003F4U6)
+## 4x1 Multiplexer (MUX) Wiring and Implementation for VSDSquadron, a Mini RISC-V SoC development kit (CH32V003F4U6)
 
 
 ### Overview  
-This project implements a *4x4 Multiplexer (MUX)* using the *VSDSquadron Mini, a RISC-V-based SoC development kit (CH32V003F4U6). A **MUX* selects one of the multiple input signals and forwards it to a single output. The *4x4 MUX* takes *four data inputs* and selects one using *two selection lines*.  
+This project implements a *4x1 Multiplexer (MUX)* using the *VSDSquadron Mini, a RISC-V-based SoC development kit (CH32V003F4U6). A **MUX* selects one of the multiple input signals and forwards it to a single output. The *4x1 MUX* takes *four data inputs* and selects one using *two selection lines*.  
 This project demonstrates GPIO-based *MUX simulation in software, implemented using **PlatformIO IDE*, with selection via push buttons and output displayed using an LED.
 
 ### Components Required  
 - *VSDSquadron Mini RISC-V SoC* ( CH32V003F4U6 ) 
 - *2 Push Buttons* (2 for selection inputs)  
 - *1 LED* (Displays the selected output)  
-- *Resistor* (220Ω for LED)  
+- *Resistors* (Two 10Ω for push buttons and 220Ω for LED)  
 - *Breadboard & Jumper Wires*  
 - *VS Code with PlatformIO IDE*  
 
@@ -822,10 +822,22 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 #### Power & Stability  
 - *3.3V and GND connections* ensure stable operation of all components.
 
+### Circuit Diagram & Truth Table
+
+![4x4_Multiplexer_Circuit_Diagram](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%205/4x1_Multiplexer_Circuit_Diagram.png)
+
+
+| S1(A) | S0(B) | D0 | D1 | D2 | D3 | Output(Y) |
+|-------|-------|----|----|----|----|-----------|
+|   0   |   0   | D0 |  - |  - |  - |    D0     |
+|   0   |   1   |  - | D1 |  - |  - |    D1     |
+|   1   |   0   |  - |  - | D2 |  - |    D2     |
+|   1   |   1   |  - |  - |  - | D3 |    D3     |
+
 
 ###  Wiring Diagram & Connections
 
-![4x4_Multiplexer](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%205/4x4_Multiplexer.jpg)
+![4x4_Multiplexer](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%205/4x1_Multiplexer.jpg)
 
 
 | Signal | Pin | Connection |
