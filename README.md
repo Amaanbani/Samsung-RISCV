@@ -825,7 +825,7 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 
 ### Circuit Diagram & Truth Table
 
-![4x4_Multiplexer_Circuit_Diagram](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%205/4x1_Multiplexer_Circuit_Diagram.png)
+![4x1_Multiplexer_Circuit_Diagram](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%205/4x1_Multiplexer_Circuit_Diagram.png)
 
 
 | S1(A) | S0(B) | D0 | D1 | D2 | D3 | Output(Y) |
@@ -838,7 +838,7 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 
 ###  Wiring Diagram & Connections
 
-![4x4_Multiplexer](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%205/4x1_Multiplexer.jpg)
+![4x1_Multiplexer](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%205/4x1_Multiplexer.jpg)
 
 
 | Signal | Pin | Connection |
@@ -909,7 +909,7 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
    	    		 // Output selected input to Y
    	    		 GPIO_WriteBit(GPIOC, GPIO_Pin_6, input_value);
 
- 	      		 Delay_Ms(1000);// Delay before next check
+ 	      		 Delay_Ms(100);// Delay before next check
  	  		 }
 		}
 
@@ -928,7 +928,7 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 ## 4x1 Multiplexer (MUX) without any input signals using a VSDSquadron Mini RISC-V SoC development kit (CH32V003F4U6)
 
 ### Overview  
-This project implements a *4x1 Multiplexer (MUX)* using the *VSDSquadron Mini, a RISC-V-based SoC development kit (CH32V003F4U6). A **MUX* selects one of the multiple input signals and forwards it to a single output.Here the input values D3,D2,D1,D0 are assigned and incremented after 5 seconds in a loop from 0000(0) to 1111(15) internally through the code and selects one using *two selection lines*.  
+This project implements a *4x1 Multiplexer (MUX)* using the *VSDSquadron Mini, a RISC-V-based SoC development kit (CH32V003F4U6). A **MUX* selects one of the multiple input signals and forwards it to a single output.Here the input values D3,D2,D1,D0 are assigned and incremented after 1 seconds in a loop from 0000(0) to 1111(15) internally through the code and selects one using *two selection lines*.  
 This project demonstrates GPIO-based *MUX simulation in software, implemented using **PlatformIO IDE*, with selection via push buttons and output displayed using an LED.
 
 ### Components Required  
@@ -1014,3 +1014,18 @@ This project demonstrates GPIO-based *MUX simulation in software, implemented us
 		
 	
 ---
+
+
+## Application_Video_Of_4x1_MUX
+
+![4x1_Mux_Video_link](https://github.com/Amaanbani/Samsung-RISCV/blob/main/Task%206/VSDSquadron_Mini_Application_Video_4x1_mux_wotip.mp4)
+
+In the video, D0 is selected as the output while S0 and S1 are set to LOW (i.e., S0 = 0, S1 = 0). The input values of D3, D2, D1, and D0 are sequentially assigned and incremented every 1 second in a loop, ranging from 0000 (0) to 1111 (15) internally through the code. Consequently, the LED blinks after each cycle, as D0 toggles between LOW and HIGH states.
+
+The values of S0 and S1 can be adjusted using push buttons, where pressing a button indicates a HIGH (1) input, and when the button is not pressed, it corresponds to a LOW (0) input.
+
+
+</details>
+
+
+----------------------------------------------------------------------------------------------------------------
