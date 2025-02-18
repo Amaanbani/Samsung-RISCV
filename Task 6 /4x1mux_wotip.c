@@ -18,6 +18,15 @@
 	   GPIO_Init(GPIOC, &GPIO_InitStructure);
 		}
 
+		// Incase to avoid giving input even for Selectlines 
+		//void Toggle_S0_S1(void)
+		//{
+    			//    Toggle GPIO pins S0 (GPIO_Pin_4) and S1 (GPIO_Pin_5) using BSHR and BCR registers
+			//    GPIOC->BSHR = GPIO_Pin_4 | GPIO_Pin_5;  // Set the bits (simulate high-to-low toggle)
+			//    GPIOC->BCR = GPIO_Pin_4 | GPIO_Pin_5;   // Clear the bits (simulate low-to-high toggle)
+		//}
+		
+	
 	int main()
 		{
  	   uint8_t  input_value = 0;
@@ -50,8 +59,12 @@
 
             // Output the selected input value to the output pin Y
             GPIO_WriteBit(GPIOC, GPIO_Pin_6, input_value);
-	     
- 	       Delay_Ms(100); // Delay before the next selection
+
+	            // Toggle S0 and S1 for the next iteration
+            		//	Toggle_S0_S1();
+
+			   
+ 	    Delay_Ms(100); // Delay before the next selection
  		   }
 		}
 	}
