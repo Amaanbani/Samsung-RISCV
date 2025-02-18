@@ -48,6 +48,6 @@ int main()
         // Output selected input to Y
         GPIO_WriteBit(GPIOC, GPIO_Pin_6, input_value);
 
-        Delay_Ms(1000);// Delay before next check
+        Delay_Ms(100);// Delay before next check
     }
 }
